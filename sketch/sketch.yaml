@@ -1,0 +1,18 @@
+profiles:
+  default:
+    fqbn: 
+    platforms:
+      - platform: arduino:zephyr
+    libraries:
+      - dependency: Adafruit BusIO (1.17.4)
+      - Adafruit GFX Library (1.12.4)
+      - Adafruit SSD1306 (2.5.16)
+      - dependency: Arduino_RPClite (0.2.1)
+      - Arduino_RouterBridge (0.3.0)
+      - dependency: ArxContainer (0.7.0)
+      - dependency: ArxTypeTraits (0.3.2)
+      - dependency: DebugLog (0.8.4)
+      - dependency: MsgPack (0.4.2)
+      - Serial_Monitor (4.0.8)
+
+default_profile: default
