@@ -1,3 +1,6 @@
 # ignore app cache folder
 .cache/
+
+# ignore environment variables and packages
 .env
+.venv
