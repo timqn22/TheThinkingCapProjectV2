@@ -13,9 +13,16 @@ void setup() {
     while (true) delay(100);
   }
   oled_showMessage("Ready!");
+  Bridge.provide("keyword_detected", wake_up);
 }
 
+void wake_up() {
+  oled_showMessage("Whats up chud");
+}
+
+
 void loop() {
+  
   while (Monitor.available()) {
     char ch = (char)Monitor.read();
     if (ch == '\n' || ch == '\r') {

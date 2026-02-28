@@ -1,5 +1,7 @@
 name: TheThinkingCapProject
 description: ""
 ports: []
-bricks: []
+bricks:
+- arduino:keyword_spotting:
+    model: keyword-spotting-hey-arduino
 icon: 😀
