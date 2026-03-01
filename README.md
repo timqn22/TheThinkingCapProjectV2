@@ -2,7 +2,7 @@ The Thinking Cap Project is a wearable AI assistant that listens for a wake word
 
 ## How It Works
 
-The system operates through a combination of a Python backend and an Arduino-powered hardware component.
+The system operates through the Arduino Uno Q, bridging a Linux MPU with a STM32 MCU. The MPU handles the voice to text and API calls, while the MCU operates the OLED display.
 
 1.  **Wake Word Detection**: The main Python script (`main.py`) continuously listens for the wake word "jarvis" using the `vosk` offline speech recognition engine. This ensures privacy and low-latency activation.
 
@@ -17,10 +17,9 @@ The system operates through a combination of a Python backend and an Arduino-pow
 ## Key Components
 
 ### Hardware
-*   An Arduino-compatible microcontroller
+*   An Arduino Uno Q
 *   A 128x64 OLED Display (driven by the SSD1306 chipset)
-*   A microphone (configured for `arecord`, e.g., a USB microphone)
-*   A camera (e.g., a USB webcam)
+*   A usb webcam/microphone
 
 ### Software
 *   **Python**:
