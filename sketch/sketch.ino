@@ -11,7 +11,8 @@ void setup() {
   Bridge.provide("show_message", show_message);
   Bridge.provide("show_feet", show_feet);
   Monitor.begin();
-
+  setupUltrasonic(12, 11);
+  
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     while (true) delay(100);
   }
