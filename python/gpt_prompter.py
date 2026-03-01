@@ -4,14 +4,16 @@ import cv2
 from openai import OpenAI
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 SNAPSHOT_PATH = "/tmp/snapshot.jpg"
 
+
 def capture_snapshot():
-    camera = cv2.VideoCapture(2)
+    camera = cv2.VideoCapture(0)
 
     ret, frame = camera.read()
     camera.release()
@@ -21,9 +23,11 @@ def capture_snapshot():
         return SNAPSHOT_PATH
     return None
 
+
 def encode_image(image_path):
     with open(image_path, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
+
 
 tools = [
     {
@@ -38,13 +42,14 @@ tools = [
     }
 ]
 
+
 def gpt_prompter(prompt: str):
     messages = [{"role": "user", "content": prompt}]
 
     # First call — let GPT decide if it needs the camera
     response = client.responses.create(
         model="gpt-5.2",
-        instructions="Keep your response within 100 words",
+        instructions="You are an AI agent named Jarvis, keep your responses short and concise, with limited use of special characters.",
         tools=tools,
         input=messages
     )

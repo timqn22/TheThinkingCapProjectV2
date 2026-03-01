@@ -1,3 +1,4 @@
+// Filters out errors in python string for C++
 String sanitizeForOLED(String msg) {
   String clean = "";
   for (int i = 0; i < msg.length(); i++) {
@@ -24,6 +25,7 @@ String sanitizeForOLED(String msg) {
   return clean;
 }
 
+// Counts number of lines
 int countLines(String msg, int charsPerLine) {
   int totalLines = 1;
   int col = 0;
@@ -42,6 +44,7 @@ int countLines(String msg, int charsPerLine) {
   return totalLines;
 }
 
+// Supports scrolling on OLED monitor by finding start
 int findScrollStart(String msg, int charsPerLine, int scrollLine) {
   int currentLine = 0;
   int col = 0;
@@ -62,6 +65,7 @@ int findScrollStart(String msg, int charsPerLine, int scrollLine) {
   return startIdx;
 }
 
+// Print lines
 void printVisibleLines(String msg, int startIdx, int charsPerLine, int maxLines) {
   int printed = 0;
   int col = 0;
@@ -80,6 +84,7 @@ void printVisibleLines(String msg, int startIdx, int charsPerLine, int maxLines)
   }
 }
 
+// Main scrolling process
 void scrollText(String msg, int charsPerLine, int lineHeight, int maxLines, int totalLines) {
   bool firstPrint = true;
   
@@ -92,16 +97,17 @@ void scrollText(String msg, int charsPerLine, int lineHeight, int maxLines, int 
     display.display();
     
     if (firstPrint){
-      delay(10000);
+      delay(7500);
       firstPrint = false;
     }
       
-    delay(5000);
+    delay(3000);
   }
   
-  delay(10000);
+  delay(7500);
 }
 
+// Prints messages to OLED monitor
 void oled_showMessage(String msg) {
   msg = sanitizeForOLED(msg);
   display.clearDisplay();
@@ -124,8 +130,9 @@ void oled_showMessage(String msg) {
   }
 }
 
+// Prints messages to OLED monitor but centered
 void oled_showCentered(String msg) {
-  msg = sanitizeForOLED(msg);
+  //msg = sanitizeForOLED(msg); // This is too restrictive currently and denies good responses
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
@@ -147,6 +154,7 @@ void oled_showCentered(String msg) {
   }
 }
 
+// Clears OLED display
 void oled_clear() {
   display.clearDisplay();
   display.display();

@@ -3,6 +3,7 @@ import json
 import time
 from vosk import Model, KaldiRecognizer
 
+
 def vosk_speech_to_text(model_path, timeout):
     model = Model(model_path)
     recognizer = KaldiRecognizer(model, 16000)
@@ -10,7 +11,7 @@ def vosk_speech_to_text(model_path, timeout):
     process = subprocess.Popen(
         ["arecord", "-D", "plughw:CARD=B100,DEV=0", "-f", "S16_LE", "-r", "16000", "-c", "1", "-t", "raw"],
         stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE  # change DEVNULL to PIPE temporarily
+        stderr=subprocess.PIPE
     )
 
     print("Vosk is listening...")
@@ -38,7 +39,6 @@ def vosk_speech_to_text(model_path, timeout):
                 break
 
     finally:
-
         process.terminate()
 
     return " ".join(text_list)
