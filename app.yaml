@@ -1,5 +1,8 @@
 name: TheThinkingCapProject
 description: ""
 ports: []
-bricks: []
+bricks:
+- arduino:web_ui: {}
+- arduino:video_object_detection:
+    model: yolox-object-detection
 icon: 😀

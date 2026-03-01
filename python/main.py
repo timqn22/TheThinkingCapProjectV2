@@ -7,6 +7,7 @@ import os
 import subprocess
 from vosk import Model, KaldiRecognizer
 
+#Load voice to text model
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "models", "vosk-model-small-en-us-0.15")
 TIMEOUT = 5
 WAKE_WORD = "potato"
@@ -67,8 +68,14 @@ def loop():
             if command.strip():
                 Bridge.call("show_message", "Asking GPT...")
                 response = gpt_prompter(command)
-                Bridge.call("show_message", response)
-                
+                print(response)
+                response = response[:168]  # ~8 lines x 21 chars on OLED
+                response = response.encode('ascii', errors='replace').decode('ascii')
+                print(response)
+                try:
+                    Bridge.call("show_message", response, timeout=60)
+                except Exception as e:
+                    Bridge.call("show_message", "Something went wrong :(")
             else:
                 Bridge.call("show_message", "Didn't catch that.")
         

@@ -1,3 +1,5 @@
+
+/**
 #include "libraries/EasyUltrasonic/EasyUltrasonic.h"
 
 EasyUltrasonic ultrasonic;
@@ -12,3 +14,4 @@ float getUltrasonicSnapshotFeet() {
   float distanceFeet = distanceCM / 30.48;
   return distanceFeet;
 }
+**/
