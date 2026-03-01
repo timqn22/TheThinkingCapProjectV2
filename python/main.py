@@ -54,7 +54,7 @@ def loop():
                     print(cmd_text)
                     if cmd_text.strip():
                         text_list.append(cmd_text)
-                        last_talk_time = time.time()
+                        last_talk_time = time.time()-3
                         print(last_talk_time)
                 print(time.time() - last_talk_time)        
                 if time.time() - last_talk_time > TIMEOUT:
@@ -68,9 +68,7 @@ def loop():
             if command.strip():
                 Bridge.call("show_message", "Asking GPT...")
                 response = gpt_prompter(command)
-                print(response)
-                response = response[:168]  # ~8 lines x 21 chars on OLED
-                response = response.encode('ascii', errors='replace').decode('ascii')
+                response = response.encode("ascii", "ignore").decode("ascii")
                 print(response)
                 try:
                     Bridge.call("show_message", response, timeout=60)

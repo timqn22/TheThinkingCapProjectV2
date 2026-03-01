@@ -11,11 +11,12 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 SNAPSHOT_PATH = "/tmp/snapshot.jpg"
 
 def capture_snapshot():
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(2)
+
     ret, frame = camera.read()
     camera.release()
     if ret:
-        frame=cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+        frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
         cv2.imwrite(SNAPSHOT_PATH, frame)
         return SNAPSHOT_PATH
     return None
