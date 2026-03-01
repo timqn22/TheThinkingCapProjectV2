@@ -3,7 +3,7 @@ import base64
 import cv2
 from openai import OpenAI
 from dotenv import load_dotenv
-from arduino.app_utils import Bridge
+
 load_dotenv()
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -30,16 +30,6 @@ tools = [
         "type": "function",
         "name": "take_snapshot",
         "description": "Takes a photo using the camera and analyzes it. Use this when the user asks about something visual, asks what you can see, references the camera, or asks about their surroundings/environment.",
-        "parameters": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        }
-    },
-    {
-        "type": "function",
-        "name": "get_distance",
-        "description": "Gets the distance to the nearest object in front of the user in feet using an ultrasonic sensor. Use this when the user asks how far something is, asks about distance, or asks what's in front of the sensor.",
         "parameters": {
             "type": "object",
             "properties": {},
@@ -85,23 +75,6 @@ def gpt_prompter(prompt: str):
             return response.choices[0].message.content
         else:
             return "I tried to access the camera but couldn't get a snapshot."
-    elif tool_call and tool_call.name == "get_distance":
-        print("GPT requested ultrasonic distance...")
-        try:
-            distance_feet = Bridge.call("show_feet")
-            
-            # Second call — tell GPT the result so it can form a natural response
-            response = client.responses.create(
-                model="gpt-5.2",
-                instructions="Keep your response within 20 words",
-                input=[
-                    {"role": "user", "content": prompt},
-                    {"role": "assistant", "content": f"Tool result: the distance is {distance_feet:.2f} feet."}
-                ]
-            )
-            return response.output_text
-        except Exception as e:
-            return f"Couldn't get distance reading: {str(e)}"
-        
+
     # No tool call — return the plain text response
     return response.output_text
