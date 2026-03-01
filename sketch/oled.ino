@@ -109,7 +109,7 @@ void scrollText(String msg, int charsPerLine, int lineHeight, int maxLines, int 
 
 // Prints messages to OLED monitor
 void oled_showMessage(String msg) {
-  msg = sanitizeForOLED(msg);
+  //msg = sanitizeForOLED(msg); // This is too restrictive currently and denies good responses
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);

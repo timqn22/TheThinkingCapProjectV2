@@ -49,7 +49,7 @@ def gpt_prompter(prompt: str):
     # First call — let GPT decide if it needs the camera
     response = client.responses.create(
         model="gpt-5.2",
-        instructions="You are an AI agent named Jarvis, keep your responses short and concise, with limited use of special characters.",
+        instructions="You are an AI agent named Jarvis, keep your responses short and concise, with no special characters.",
         tools=tools,
         input=messages
     )
@@ -65,19 +65,18 @@ def gpt_prompter(prompt: str):
             image_data = encode_image(snapshot_path)
 
             # Second call — send the image back with the original prompt
-            response = client.chat.completions.create(
+            response = client.responses.create(
                 model="gpt-5.2",
-                messages=[{
+                instructions="You are an AI agent named Jarvis, keep your responses short and concise, with no special characters.",
+                input=[{
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": prompt},
-                        {"type": "image_url", "image_url": {
-                            "url": f"data:image/jpeg;base64,{image_data}"
-                        }}
+                        {"type": "input_text", "text": prompt},
+                        {"type": "input_image", "image_url": f"data:image/jpeg;base64,{image_data}"}
                     ]
                 }]
             )
-            return response.choices[0].message.content
+            return response.output_text
         else:
             return "I tried to access the camera but couldn't get a snapshot."
 

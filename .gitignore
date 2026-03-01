@@ -7,3 +7,6 @@
 
 # ignore cache file
 __pycache__/
+
+# ignore model folders
+python/models/
