@@ -4,40 +4,27 @@
 #include <Arduino_RouterBridge.h>
 
 Adafruit_SSD1306 display(128, 64, &Wire, -1);
-String inputBuffer = "";
 
 void setup() {
-  Monitor.begin();
   Bridge.begin();
+  Bridge.provide("show_listening", show_listening);
+  Bridge.provide("show_message", show_message);
+  
+  Monitor.begin();
+
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     while (true) delay(100);
   }
-  oled_showMessage("Ready!");
-  Bridge.provide("keyword_detected", wake_up);
+
+  oled_showCentered("Say 'Hey Arduino'");
 }
 
-void wake_up() {
-  oled_showMessage("Whats up chud");
+void loop() {}
+
+void show_listening() {
+  oled_showMessage("Listening...");
 }
 
-
-void loop() {
-  
-  while (Monitor.available()) {
-    char ch = (char)Monitor.read();
-    if (ch == '\n' || ch == '\r') {
-      inputBuffer.trim();
-      if (inputBuffer.length() > 0) {
-        // send prompt to Python via Monitor
-        Monitor.println(inputBuffer);
-        oled_showMessage("Asking GPT...");
-        String response;
-        Bridge.call("gpt_prompter", inputBuffer).result(response);
-        oled_showMessage(response);
-      }
-    } else {
-      inputBuffer += ch;
-    }
-  }
-  delay(10);
+void show_message(String msg) {
+  oled_showMessage(msg);
 }

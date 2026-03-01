@@ -1,0 +1,4 @@
+vosk
+sounddevice
+openai
+python-dotenv

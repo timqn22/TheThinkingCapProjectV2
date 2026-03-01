@@ -1,52 +1,44 @@
-import pyaudio
+import subprocess
+import json
 import time
 from vosk import Model, KaldiRecognizer
-import os
-import json
 
 def vosk_speech_to_text(model_path, timeout):
-    if not os.path.exists(model_path):
-        print(f"Error: model path '{model_path}' doesn't exist")
-        exit()
-
     model = Model(model_path)
     recognizer = KaldiRecognizer(model, 16000)
-    recognizer.SetWords(True)
-    last_talk_time = time.time()
-    text_list = []
-
-    p = pyaudio.PyAudio()
-    stream = p.open(format=pyaudio.paInt16,
-                    channels=1,
-                    rate=16000,
-                    input=True,
-                    frames_per_buffer=8192)
-    stream.start_stream()
+    
+    process = subprocess.Popen(
+        ["arecord", "-D", "plughw:CARD=B100,DEV=0", "-f", "S16_LE", "-r", "16000", "-c", "1", "-t", "raw"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE  # change DEVNULL to PIPE temporarily
+    )
 
     print("Vosk is listening...")
+    text_list = []
+    last_talk_time = time.time()
 
     try:
         while True:
-            data = stream.read(4096, exception_on_overflow=False)
+            print(last_talk_time)
+            data = process.stdout.read(4096)
+            if not data:
+                break
+            
             if recognizer.AcceptWaveform(data):
                 result = json.loads(recognizer.Result())
-                text = result["text"]
+                text = result.get("text", "")
+        
                 if text.strip():
                     print(f"User said: {text}")
                     text_list.append(text)
                     last_talk_time = time.time()
             
             if time.time() - last_talk_time > timeout:
-                print(f"No speech detected for {timeout} seconds")
-                print("Vosk is stopping...")
+                print(f"No speech for {timeout}s, stopping.")
                 break
 
-    except KeyboardInterrupt:
-        print("Force stop with keyboard interruption")
-        
     finally:
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
+
+        process.terminate()
 
     return " ".join(text_list)
