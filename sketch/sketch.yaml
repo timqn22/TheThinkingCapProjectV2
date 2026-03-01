@@ -14,5 +14,8 @@ profiles:
       - dependency: DebugLog (0.8.4)
       - dependency: MsgPack (0.4.2)
       - Serial_Monitor (4.0.8)
+      - dependency: Adafruit Unified Sensor (1.1.15)
+      - dependency: DHT sensor library (1.4.6)
+      - EasyUltrasonic (1.1.1)
 
 default_profile: default

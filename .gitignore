@@ -4,3 +4,6 @@
 # ignore environment variables and packages
 .env
 .venv
+
+# ignore cache file
+__pycache__/
